@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import {socket} from './socket'
+import ChatBox from './ChatBox'
 
 function App() {
   const [isConnected, setIsConnected] = useState(socket.connected)
@@ -33,7 +34,7 @@ function App() {
       <button className="btn btn-primary" onClick={()=>socket.connect()}>Connect</button>
       <button className="btn btn-primary" onClick={()=>socket.disconnect()}>Disconnect</button>
       <div className="divider"></div>
-      
+      <ChatBox />
     </div>
   )
 }
