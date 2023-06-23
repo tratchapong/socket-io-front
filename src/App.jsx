@@ -1,42 +1,62 @@
-import {useState, useEffect} from 'react'
-import {socket} from './socket'
-import ChatBox from './ChatBox'
+import { useState, useEffect } from "react";
+import { socket } from "./socket";
+import ChatBox from "./ChatBox";
 
 function App() {
-  const [isConnected, setIsConnected] = useState(socket.connected)
+  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [socketId, setSocketId] = useState(0);
+  const [username, setUsername] = useState("");
 
-  useEffect( ()=> {
-    socket.on('connect', ()=> {
-      setIsConnected(true)
-    })
-    socket.on('disconnect', ()=> {
-      setIsConnected(false)
-    })
-    console.log(socket.connected)
-
-    return ()=> {
-      // socket.off('connect', ()=> {
-      //   setIsConnected(true)
-      // })
-      // socket.off('disconnect', ()=> {
-      //   setIsConnected(false)
-      // })
+  useEffect(() => {
+    function onConnect() {
+      console.log("Connected", socket.id);
+      // socket.emit('enter', {name: username, id: socket.id})
+      setSocketId(socket.id);
+      setIsConnected(true);
     }
-  },[])
+    function onDisconnect() {
+      setIsConnected(false);
+    }
 
-  // const hdlClick = () => {
-  //   socket.connect()
-  // }
+    socket.on("connect", onConnect);
+    socket.on("disconnect", onDisconnect);
+
+    return () => {
+      socket.off("connect");
+      socket.off("disconnect");
+    };
+  }, []);
+
+  const hdlEnter = () => {
+    if(username.trim())
+    socket.connect().emit("enter", username);
+  };
+
+  const hdlLeave = () => {
+    socket.disconnect()
+  }
   return (
-    <div className='max-w-6xl mx-auto grid grid-cols-1 gap-3 w-3/4'>
-      <div className="text-2xl">App</div>
-      <div className="text-2xl">Connected : {`${isConnected}`}</div>
-      <button className="btn btn-primary" onClick={()=>socket.connect()}>Connect</button>
-      <button className="btn btn-primary" onClick={()=>socket.disconnect()}>Disconnect</button>
-      <div className="divider"></div>
-      <ChatBox />
+    <div className="max-w-6xl mx-auto grid grid-cols-1 gap-3 w-3/4">
+      <div className="text-2xl text-purple-500">Socket Id : {socketId} </div>
+      <div className="grid grid-cols-4 gap-2">
+        <input
+          type="text"
+          className="input input-primary col-span-2"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          disabled={isConnected}
+        />
+        <button className="btn" onClick={hdlEnter} disabled={isConnected}>
+          Enter
+        </button>
+        <button className="btn" onClick={hdlLeave}>
+          Leave
+        </button>
+      </div>
+      <ChatBox username={username} />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
