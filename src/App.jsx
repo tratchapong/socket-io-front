@@ -6,6 +6,7 @@ function App() {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [socketId, setSocketId] = useState(0);
   const [username, setUsername] = useState("");
+  const [allMsg, setAllMsg] = useState([])
 
   useEffect(() => {
     function onConnect() {
@@ -18,8 +19,13 @@ function App() {
       setIsConnected(false);
     }
 
+    function onGetMessage(msg) {
+      console.log("getMessage", msg)
+      setAllMsg(msg)
+    }
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
+    socket.on("getMessage", onGetMessage)
 
     return () => {
       socket.off("connect");
@@ -29,11 +35,12 @@ function App() {
 
   const hdlEnter = () => {
     if(username.trim())
-    socket.connect().emit("enter", username);
+      socket.connect().emit("enter", username);
   };
 
   const hdlLeave = () => {
     socket.disconnect()
+    setAllMsg([])
   }
   return (
     <div className="max-w-6xl mx-auto grid grid-cols-1 gap-3 w-3/4">
@@ -54,7 +61,7 @@ function App() {
           Leave
         </button>
       </div>
-      <ChatBox username={username} />
+      <ChatBox username={username} allMsg={allMsg} socketId={socketId} />
     </div>
   );
 }
