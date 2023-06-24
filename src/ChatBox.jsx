@@ -3,7 +3,7 @@ import MsgSendBox from "./components/MsgSendBox";
 import MsgTurn from "./components/MsgTurn";
 
 export default function ChatBox(props) {
-  const { username, allMsg, socketId } = props;
+  const { username, allMsg, socketId, room } = props;
   return (
     <div className="container mx-auto">
       <div className="max-w-2xl border rounded">
@@ -25,7 +25,7 @@ export default function ChatBox(props) {
                 ))}
               </ul>
             </div>
-            <MsgSendBox />
+            <MsgSendBox room={room} />
           </div>
         </div>
       </div>

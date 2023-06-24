@@ -6,7 +6,8 @@ function App() {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [socketId, setSocketId] = useState(0);
   const [username, setUsername] = useState("");
-  const [allMsg, setAllMsg] = useState([])
+  const [room, setRoom] = useState("");
+  const [allMsg, setAllMsg] = useState([]);
 
   useEffect(() => {
     function onConnect() {
@@ -19,13 +20,13 @@ function App() {
       setIsConnected(false);
     }
 
-    function onGetMessage(msg) {
-      console.log("getMessage", msg)
-      setAllMsg(msg)
+    function onGetMessage(roomMsg) {
+      console.log("getMessage", roomMsg);
+      setAllMsg(roomMsg);
     }
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
-    socket.on("getMessage", onGetMessage)
+    socket.on("getMessage", onGetMessage);
 
     return () => {
       socket.off("connect");
@@ -34,17 +35,30 @@ function App() {
   }, []);
 
   const hdlEnter = () => {
-    if(username.trim())
-      socket.connect().emit("enter", username);
+    if (username.trim() && room.trim()) {
+      socket.connect().emit("enter", {username, room});
+    } else { alert ('incomplete input')}
   };
 
   const hdlLeave = () => {
-    socket.disconnect()
-    setAllMsg([])
-  }
+    socket.disconnect();
+    setAllMsg([]);
+  };
   return (
-    <div className="max-w-6xl mx-auto grid grid-cols-1 gap-3 w-3/4">
-      <div className="text-2xl text-purple-500">Socket Id : {socketId} </div>
+    <div className="max-w-2xl mx-auto grid grid-cols-1 gap-3 w-3/4">
+      <div className="grid grid-cols-2 ">
+        <input
+          type="text"
+          className="input input-primary"
+          placeholder="Room"
+          value={room}
+          onChange={(e) => {
+            setRoom(e.target.value);
+          }}
+          disabled={isConnected}
+        />
+        <div className="text-xl text-purple-500 text-right">Socket Id : {socketId} </div>
+      </div>
       <div className="grid grid-cols-4 gap-2">
         <input
           type="text"
@@ -61,7 +75,7 @@ function App() {
           Leave
         </button>
       </div>
-      <ChatBox username={username} allMsg={allMsg} socketId={socketId} />
+      <ChatBox username={username} allMsg={allMsg} socketId={socketId} room={room}/>
     </div>
   );
 }
