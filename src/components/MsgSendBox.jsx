@@ -1,12 +1,16 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { socket } from "../socket";
 
-export default function MsgSendBox() {
+export default function MsgSendBox(props) {
+  const {room} = props
   const [input, setInput] = useState("");
 
   const hdlSubmit = (e) => {
     e.preventDefault();
-    socket.emit("sendMessage", input);
+    if(!input.trim())
+      return setInput("")
+    socket.emit("sendMessage", {msg: input, room });
     setInput("");
   };
   return (
