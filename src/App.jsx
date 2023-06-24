@@ -36,8 +36,15 @@ function App() {
 
   const hdlEnter = () => {
     if (username.trim() && room.trim()) {
+<<<<<<< HEAD
       socket.connect().emit("enter", {username, room});
     } else { alert ('incomplete input')}
+=======
+      socket.connect().emit("enter", { username, room });
+    } else {
+      alert("incomplete input");
+    }
+>>>>>>> v02
   };
 
   const hdlLeave = () => {
@@ -47,7 +54,7 @@ function App() {
   return (
     <div className="max-w-2xl mx-auto grid grid-cols-1 gap-3 w-3/4">
       <div className="grid grid-cols-2 ">
-        <input
+        {/* <input
           type="text"
           className="input input-primary"
           placeholder="Room"
@@ -56,8 +63,22 @@ function App() {
             setRoom(e.target.value);
           }}
           disabled={isConnected}
-        />
-        <div className="text-xl text-purple-500 text-right">Socket Id : {socketId} </div>
+        /> */}
+        <select
+          className="select select-info w-full max-w-xs"
+          onChange={(e) => {
+            setRoom(e.target.value);
+          }}
+          disabled={isConnected}
+        >
+          <option disabled selected>
+            Select Room
+          </option>
+          <option value='room01'>Room 01</option>
+          <option value='room02'>Room 02</option>
+          <option value='room03'>Room 03</option>
+        </select>
+        <div className="text-sm text-purple-500 text-right">Socket Id : {socketId} </div>
       </div>
       <div className="grid grid-cols-4 gap-2">
         <input
@@ -75,7 +96,7 @@ function App() {
           Leave
         </button>
       </div>
-      <ChatBox username={username} allMsg={allMsg} socketId={socketId} room={room}/>
+      <ChatBox username={username} allMsg={allMsg} socketId={socketId} room={room} />
     </div>
   );
 }
