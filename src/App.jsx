@@ -31,20 +31,16 @@ function App() {
     return () => {
       socket.off("connect");
       socket.off("disconnect");
+      socket.off("getMessage")
     };
   }, []);
 
   const hdlEnter = () => {
     if (username.trim() && room.trim()) {
-<<<<<<< HEAD
-      socket.connect().emit("enter", {username, room});
-    } else { alert ('incomplete input')}
-=======
       socket.connect().emit("enter", { username, room });
     } else {
       alert("incomplete input");
     }
->>>>>>> v02
   };
 
   const hdlLeave = () => {
