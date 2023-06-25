@@ -46,20 +46,12 @@ function App() {
   const hdlLeave = () => {
     socket.disconnect();
     setAllMsg([]);
+    setIsConnected(false)
+    setSocketId(0)
   };
   return (
-    <div className="max-w-2xl mx-auto grid grid-cols-1 gap-3 w-3/4">
+    <div className="pt-2 max-w-2xl mx-auto grid grid-cols-1 gap-3 w-3/4">
       <div className="grid grid-cols-2 ">
-        {/* <input
-          type="text"
-          className="input input-primary"
-          placeholder="Room"
-          value={room}
-          onChange={(e) => {
-            setRoom(e.target.value);
-          }}
-          disabled={isConnected}
-        /> */}
         <select
           className="select select-info w-full max-w-xs"
           onChange={(e) => {

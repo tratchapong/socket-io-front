@@ -16,16 +16,16 @@ export default function ChatBox(props) {
                 alt="username"
               />
               <span className="block ml-2 font-bold text-gray-600">{username}</span>
-              <span className="absolute w-3 h-3 bg-green-600 rounded-full left-10 top-3"></span>
+              <span className={"absolute w-3 h-3 rounded-full left-10 top-3" + ` ${socketId ? 'bg-green-600' : 'bg-red-500'}`}></span>
             </div>
-            <div className="relative w-full p-6 overflow-y-auto h-[30rem]">
+            <div className="relative w-full p-6 overflow-y-auto h-[29rem]">
               <ul className="space-y-2">
                 {allMsg.map( (el,i) => (
-                  <MsgTurn key={i} msg={el.msg} isMe={el.id===socketId} />
+                  <MsgTurn key={i} msg={el.msg} chatuser={el.username} isMe={el.username===username} />
                 ))}
               </ul>
             </div>
-            <MsgSendBox room={room} />
+            <MsgSendBox room={room} username={username}/>
           </div>
         </div>
       </div>

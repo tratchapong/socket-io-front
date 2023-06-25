@@ -3,14 +3,14 @@ import { useState } from "react";
 import { socket } from "../socket";
 
 export default function MsgSendBox(props) {
-  const {room} = props
+  const {room, username} = props
   const [input, setInput] = useState("");
 
   const hdlSubmit = (e) => {
     e.preventDefault();
     if(!input.trim())
       return setInput("")
-    socket.emit("sendMessage", {msg: input, room });
+    socket.emit("sendMessage", {username ,msg: input, room });
     setInput("");
   };
   return (
