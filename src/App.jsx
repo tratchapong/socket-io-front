@@ -16,21 +16,16 @@ function App() {
       setSocketId(socket.id);
       setIsConnected(true);
     }
-    function onDisconnect() {
-      setIsConnected(false);
-    }
 
     function onGetMessage(roomMsg) {
       console.log("getMessage", roomMsg);
       setAllMsg(roomMsg);
     }
     socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
     socket.on("getMessage", onGetMessage);
 
     return () => {
       socket.off("connect");
-      socket.off("disconnect");
       socket.off("getMessage")
     };
   }, []);
