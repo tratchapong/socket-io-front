@@ -6,7 +6,7 @@ export default function MsgTurn(props) {
   return (
     <li className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
       { !isMe && <p className="text-xs me-2">{chatuser} : </p> }
-      <div className={`relative max-w-xl px-4 py-2 text-gray-700 ${isMe ? 'bg-gray-100': ''} rounded shadow`}>
+      <div className={`relative max-w-fit w-2/3 px-4 py-2 my-2 text-gray-700 ${isMe ? 'bg-gray-100 text-violet-500 ': ''} rounded shadow`}>
         <span className="block">{msg}</span>
       </div>
     </li>

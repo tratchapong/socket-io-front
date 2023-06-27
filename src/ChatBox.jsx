@@ -1,9 +1,18 @@
 /* eslint-disable react/prop-types */
+import { useEffect, useRef } from "react";
 import MsgSendBox from "./components/MsgSendBox";
 import MsgTurn from "./components/MsgTurn";
 
+
 export default function ChatBox(props) {
+  const ref = useRef()
+
   const { username, allMsg, socketId, room } = props;
+
+  useEffect( ()=>{
+    ref.current.scrollIntoView({ behavior : 'smooth', block: 'nearest'}) 
+  },[allMsg.length])
+
   return (
     <div className="container mx-auto">
       <div className="max-w-2xl border rounded">
@@ -23,6 +32,7 @@ export default function ChatBox(props) {
                 {allMsg.map( (el,i) => (
                   <MsgTurn key={i} msg={el.msg} chatuser={el.username} isMe={el.username===username} />
                 ))}
+                <li ref={ref}></li>
               </ul>
             </div>
             <MsgSendBox room={room} username={username}/>
